@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React from 'react';
 import { makeStyles } from 'tss-react/mui';
 import { Paper, Typography } from '@mui/material';
 import { Box } from '@mui/system';
@@ -27,9 +27,21 @@ const CurrentWeather = ({ data }: any) => {
   console.log(data);
   const updatedIcon = data.weather[0].icon.slice(0, -1) + 'd';
   const infoData = [
-    { label: 'Humidity', value: `${data.main.humidity}%` },
-    { label: 'Wind', value: `${data.wind.speed} m/s` },
-    { label: 'Pressure', value: `${data.main.pressure} hPa` },
+    {
+      label: 'Humidity',
+      value: `${data.main.humidity}%`,
+      url: '/icons/humidity-icon.svg',
+    },
+    {
+      label: 'Wind',
+      value: `${data.wind.speed} m/s`,
+      url: '/icons/wind-icon.svg',
+    },
+    {
+      label: 'Pressure',
+      value: `${data.main.pressure} hPa`,
+      url: '/icons/pressure-icon.svg',
+    },
   ];
 
   const { classes } = useStyles();
@@ -79,33 +91,58 @@ const CurrentWeather = ({ data }: any) => {
           </Typography>
         </Box>
         <Box>
-          <Typography>
-            Feels like: {Math.floor(data.main.feels_like)}&deg;C
+          <Typography
+            sx={{
+              color: 'rgb(74, 111, 161)',
+              fontWeight: 600,
+              fontSize: 18,
+              mb: 2,
+            }}
+          >
+            Feels like {Math.floor(data.main.feels_like)}&deg;C
           </Typography>
-          <Box sx={{ display: 'flex' }}>
-            <img src="/icons/high-icon.svg" alt="arrowUp" />
-            <Typography sx={{ mr: 2 }}>
+          <Box sx={{ display: 'flex', mb: 2 }}>
+            <img
+              style={{ marginRight: 5 }}
+              src="/icons/high-icon.svg"
+              alt="arrowUp"
+            />
+            <Typography
+              sx={{ mr: 2, color: 'rgb(48, 128, 200)', fontWeight: 600 }}
+            >
               {Math.floor(data.main.temp_max)}&deg;C
             </Typography>
-            <img src="/icons/low-icon.svg" alt="arrowUp" />
-            <Typography>{Math.floor(data.main.temp_min)}&deg;C</Typography>
+            <img
+              style={{ marginRight: 5 }}
+              src="/icons/low-icon.svg"
+              alt="arrowUp"
+            />
+            <Typography sx={{ color: 'rgb(48, 128, 200)', fontWeight: 600 }}>
+              {Math.floor(data.main.temp_min)}&deg;C
+            </Typography>
           </Box>
-          <Typography sx={{ color: 'rgb(123, 152, 178)' }}>
-            Humidity:
-          </Typography>
-          <Typography sx={{ color: 'rgb(48, 128, 200)' }}>
-            {data.main.humidity}%
-          </Typography>
-          <Typography sx={{ color: 'rgb(123, 152, 178)' }}>Wind:</Typography>
-          <Typography sx={{ color: 'rgb(48, 128, 200)' }}>
-            {data.wind.speed} m/s
-          </Typography>
-          <Typography sx={{ color: 'rgb(123, 152, 178)' }}>
-            Pressure:
-          </Typography>
-          <Typography sx={{ color: 'rgb(48, 128, 200)' }}>
-            {data.main.pressure} hPa
-          </Typography>
+          {infoData.map((item, index) => (
+            <Box sx={{ display: 'flex' }} key={index}>
+              <img
+                style={{ marginRight: 8, marginBottom: 7 }}
+                src={item.url}
+                alt="arrowUp"
+              />
+              <Typography
+                sx={{
+                  color: 'rgb(123, 152, 178)',
+                  fontWeight: 600,
+                  mr: 1,
+                  mb: 1,
+                }}
+              >
+                {item.label}:
+              </Typography>
+              <Typography sx={{ color: 'rgb(48, 128, 200)', fontWeight: 600 }}>
+                {item.value}
+              </Typography>
+            </Box>
+          ))}
         </Box>
       </Box>
     </Paper>
